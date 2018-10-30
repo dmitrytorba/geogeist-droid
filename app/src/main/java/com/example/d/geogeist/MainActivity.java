@@ -32,7 +32,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
+
 public class MainActivity extends AppCompatActivity {
+
+    public static final String LONGITUDE = "LONGITUDE";
+    public static final String LATITUDE = "LATITUDE";
 
     private FusedLocationProviderClient mFusedLocationClient;
 
@@ -42,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         final Intent intent = new Intent(this, MapsActivity.class);
-        intent.putExtra(EXTRA_MESSAGE, "Test");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -71,9 +74,10 @@ public class MainActivity extends AppCompatActivity {
                         public void onSuccess(Location location) {
                             // Got last known location. In some rare situations this can be null.
                             if (location != null) {
-                                // Logic to handle location object
-                                String str = location.getLatitude() + ", " + location.getLongitude();
-                                // TODO save coords
+                                intent.putExtra(LONGITUDE, location.getLongitude());
+                                intent.putExtra(LATITUDE, location.getLatitude());
+                            } else {
+                                // TODO: show error
                             }
                         }
                     });
