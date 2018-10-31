@@ -1,6 +1,7 @@
 package com.example.d.geogeist;
 
 import android.Manifest;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 
@@ -26,12 +27,15 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-import static android.provider.AlarmClock.EXTRA_MESSAGE;
-
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,19 +43,21 @@ public class MainActivity extends AppCompatActivity {
     public static final String LATITUDE = "LATITUDE";
 
     private FusedLocationProviderClient mFusedLocationClient;
+    private Intent mapIntent;
+
+    private TextView mTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        final Intent intent = new Intent(this, MapsActivity.class);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        mTextView = (TextView) findViewById(R.id.textView);
+        mapIntent = new Intent(this, MapsActivity.class);
+        FloatingActionButton mapButton = findViewById(R.id.fab);
+        mapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(intent);
+                startActivity(mapIntent);
             }
         });
 
@@ -74,8 +80,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onSuccess(Location location) {
                             // Got last known location. In some rare situations this can be null.
                             if (location != null) {
-                                intent.putExtra(LONGITUDE, location.getLongitude());
-                                intent.putExtra(LATITUDE, location.getLatitude());
+                                changeLocation(location);
                             } else {
                                 // TODO: show error
                             }
@@ -88,5 +93,29 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         // TODO
+    }
+
+    public void changeLocation(Location location) {
+        mapIntent.putExtra(LONGITUDE, location.getLongitude());
+        mapIntent.putExtra(LATITUDE, location.getLatitude());
+        String url = "https://geo.torba.us/data?lat=37.8787&lon=-122.1728";
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        mTextView.setText("Response: " + response.toString());
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+
+                    }
+                });
+
+        VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 }
