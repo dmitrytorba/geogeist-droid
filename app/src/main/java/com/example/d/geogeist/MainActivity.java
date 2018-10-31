@@ -1,29 +1,16 @@
 package com.example.d.geogeist;
 
 import android.Manifest;
-import android.app.DownloadManager;
-import android.content.Context;
 import android.content.Intent;
 
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationManager;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import android.widget.TextView;
 
@@ -35,6 +22,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
@@ -45,13 +33,13 @@ public class MainActivity extends AppCompatActivity {
     private FusedLocationProviderClient mFusedLocationClient;
     private Intent mapIntent;
 
-    private TextView mTextView;
+    private TextView mCountyName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mTextView = (TextView) findViewById(R.id.textView);
+        mCountyName = (TextView) findViewById(R.id.countyName);
         mapIntent = new Intent(this, MapsActivity.class);
         FloatingActionButton mapButton = findViewById(R.id.fab);
         mapButton.setOnClickListener(new View.OnClickListener() {
@@ -105,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        mTextView.setText("Response: " + response.toString());
+                        renderGeoData(response);
                     }
                 }, new Response.ErrorListener() {
 
@@ -117,5 +105,29 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+    }
+
+    public void renderGeoData(JSONObject data) {
+        try {
+            JSONObject county = data.getJSONObject("county");
+            String countyName = county.getString("name");
+            ((TextView) findViewById(R.id.countyName)).setText(countyName + " County");
+            JSONObject population = county.getJSONObject("population");
+            Integer totalPeople = population.getInt("total");
+            Integer houses = county.getInt("houses");
+            String text = withSuffix(totalPeople) + " people in " + withSuffix(houses) + " houses";
+            ((TextView) findViewById(R.id.countyPopulation)).setText(text);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static String withSuffix(long count) {
+        if (count < 1000) return "" + count;
+        int exp = (int) (Math.log(count) / Math.log(1000));
+        return String.format("%.1f %c",
+                count / Math.pow(1000, exp),
+                "KMGTPE".charAt(exp-1));
     }
 }
