@@ -18,6 +18,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.NetworkImageView;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -115,6 +116,10 @@ public class MainActivity extends AppCompatActivity {
             JSONObject population = county.getJSONObject("population");
             Integer totalPeople = population.getInt("total");
             Integer houses = county.getInt("houses");
+            String chartUrl = "https://geo.torba.us/" + population.getString("chart");
+            NetworkImageView chart = findViewById(R.id.county_age_chart);
+            chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+
             String text = withSuffix(totalPeople) + " people in " + withSuffix(houses) + " houses";
             ((TextView) findViewById(R.id.countyPopulation)).setText(text);
         } catch (JSONException e) {
