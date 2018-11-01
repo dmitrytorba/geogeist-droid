@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
     public void changeLocation(Location location) {
         mapIntent.putExtra(LONGITUDE, location.getLongitude());
         mapIntent.putExtra(LATITUDE, location.getLatitude());
-        String url = "https://geo.torba.us/data?lat=37.8787&lon=-122.1728";
+        String url = "https://geo.torba.us/data?lat=" + location.getLatitude() + "&lon=" + location.getLongitude();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -119,9 +119,32 @@ public class MainActivity extends AppCompatActivity {
             String chartUrl = "https://geo.torba.us/" + population.getString("chart");
             NetworkImageView chart = findViewById(R.id.county_age_chart);
             chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
-
             String text = withSuffix(totalPeople) + " people in " + withSuffix(houses) + " houses";
             ((TextView) findViewById(R.id.countyPopulation)).setText(text);
+
+            JSONObject place = data.getJSONObject("place");
+            String placeName = place.getString("name");
+            ((TextView) findViewById(R.id.placeName)).setText(placeName);
+            population = place.getJSONObject("population");
+            totalPeople = population.getInt("total");
+            houses = place.getInt("houses");
+            chartUrl = "https://geo.torba.us/" + population.getString("chart");
+            chart = findViewById(R.id.place_age_chart);
+            chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+            text = withSuffix(totalPeople) + " people in " + withSuffix(houses) + " houses";
+            ((TextView) findViewById(R.id.placePopulation)).setText(text);
+
+            JSONObject tract = data.getJSONObject("tract");
+            String tractName = tract.getString("name");
+            ((TextView) findViewById(R.id.tractName)).setText("Tract #" + tractName);
+            population = tract.getJSONObject("population");
+            totalPeople = population.getInt("total");
+            houses = tract.getInt("houses");
+            chartUrl = "https://geo.torba.us/" + population.getString("chart");
+            chart = findViewById(R.id.tract_age_chart);
+            chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+            text = withSuffix(totalPeople) + " people in " + withSuffix(houses) + " houses";
+            ((TextView) findViewById(R.id.tractPopulation)).setText(text);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -131,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
     public static String withSuffix(long count) {
         if (count < 1000) return "" + count;
         int exp = (int) (Math.log(count) / Math.log(1000));
-        return String.format("%.1f %c",
+        return String.format("%.1f%c",
                 count / Math.pow(1000, exp),
                 "KMGTPE".charAt(exp-1));
     }
