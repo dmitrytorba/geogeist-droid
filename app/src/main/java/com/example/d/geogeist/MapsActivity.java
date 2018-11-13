@@ -9,16 +9,19 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private Marker marker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -42,7 +45,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Double lat = (Double) extras.get(MainActivity.LATITUDE);
         Double lon = (Double) extras.get(MainActivity.LONGITUDE);
         LatLng here = new LatLng(lat, lon);
-        mMap.addMarker(new MarkerOptions().position(here).title("You are here"));
+        marker = mMap.addMarker(new MarkerOptions().position(here).title("You are here"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(here));
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng position) {
+                marker.remove();
+                marker = mMap.addMarker(new MarkerOptions().position(position));
+            }
+        });
     }
 }
