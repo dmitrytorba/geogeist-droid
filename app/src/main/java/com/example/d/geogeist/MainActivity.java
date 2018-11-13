@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -36,13 +37,13 @@ public class MainActivity extends AppCompatActivity {
     private FusedLocationProviderClient mFusedLocationClient;
     private Intent mapIntent;
 
-    private TextView mCountyName;
+    private ProgressBar spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mCountyName = (TextView) findViewById(R.id.countyName);
+        spinner = findViewById(R.id.spinner);
         mapIntent = new Intent(this, MapsActivity.class);
         FloatingActionButton mapButton = findViewById(R.id.fab);
         mapButton.setOnClickListener(new View.OnClickListener() {
@@ -103,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void changeLocation(Double lon, Double lat) {
+        spinner.setVisibility(View.VISIBLE);
         mapIntent.putExtra(LONGITUDE, lon);
         mapIntent.putExtra(LATITUDE, lat);
         String url = "https://geo.torba.us/data?lat=" + lat + "&lon=" + lon;
@@ -163,6 +165,8 @@ public class MainActivity extends AppCompatActivity {
             chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
             text = withSuffix(totalPeople) + " people in " + withSuffix(houses) + " houses";
             ((TextView) findViewById(R.id.tractPopulation)).setText(text);
+
+            spinner.setVisibility(View.GONE);
         } catch (JSONException e) {
             e.printStackTrace();
         }
