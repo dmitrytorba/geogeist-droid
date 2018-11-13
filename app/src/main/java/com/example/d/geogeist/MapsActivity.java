@@ -1,7 +1,11 @@
     package com.example.d.geogeist;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -12,7 +16,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+import static com.example.d.geogeist.MainActivity.LATITUDE;
+import static com.example.d.geogeist.MainActivity.LONGITUDE;
+
+    public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private Marker marker;
@@ -26,6 +33,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        Button clickButton = (Button) findViewById(R.id.button);
+        clickButton.setOnClickListener( new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                LatLng latLng = marker.getPosition();
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra(LONGITUDE, latLng.longitude);
+                resultIntent.putExtra(LATITUDE, latLng.latitude);
+                setResult(Activity.RESULT_OK, resultIntent);
+                finish();
+            }
+        });
     }
 
 
@@ -42,8 +63,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         Bundle extras = getIntent().getExtras();
-        Double lat = (Double) extras.get(MainActivity.LATITUDE);
-        Double lon = (Double) extras.get(MainActivity.LONGITUDE);
+        Double lat = (Double) extras.get(LATITUDE);
+        Double lon = (Double) extras.get(LONGITUDE);
         LatLng here = new LatLng(lat, lon);
         marker = mMap.addMarker(new MarkerOptions().position(here).title("You are here"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(here));
@@ -54,5 +75,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 marker = mMap.addMarker(new MarkerOptions().position(position));
             }
         });
+
     }
 }

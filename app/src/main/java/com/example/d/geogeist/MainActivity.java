@@ -1,6 +1,7 @@
 package com.example.d.geogeist;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 
 import android.content.pm.PackageManager;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String LONGITUDE = "LONGITUDE";
     public static final String LATITUDE = "LATITUDE";
+    public static final int COORDS = 1;
 
     private FusedLocationProviderClient mFusedLocationClient;
     private Intent mapIntent;
@@ -46,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         mapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(mapIntent);
+                startActivityForResult(mapIntent, COORDS);
             }
         });
 
@@ -69,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onSuccess(Location location) {
                             // Got last known location. In some rare situations this can be null.
                             if (location != null) {
-                                changeLocation(location);
+                                changeLocation(location.getLongitude(), location.getLatitude());
                             } else {
                                 // TODO: show error
                             }
@@ -84,10 +86,26 @@ public class MainActivity extends AppCompatActivity {
         // TODO
     }
 
-    public void changeLocation(Location location) {
-        mapIntent.putExtra(LONGITUDE, location.getLongitude());
-        mapIntent.putExtra(LATITUDE, location.getLatitude());
-        String url = "https://geo.torba.us/data?lat=" + location.getLatitude() + "&lon=" + location.getLongitude();
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (COORDS) : {
+                if (resultCode == Activity.RESULT_OK) {
+                    Bundle extras = data.getExtras();
+                    Double lat = (Double) extras.get(LATITUDE);
+                    Double lon = (Double) extras.get(LONGITUDE);
+                    changeLocation(lon, lat);
+                }
+                break;
+            }
+        }
+    }
+
+    public void changeLocation(Double lon, Double lat) {
+        mapIntent.putExtra(LONGITUDE, lon);
+        mapIntent.putExtra(LATITUDE, lat);
+        String url = "https://geo.torba.us/data?lat=" + lat + "&lon=" + lon;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
