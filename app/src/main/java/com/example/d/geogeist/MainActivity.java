@@ -134,37 +134,79 @@ public class MainActivity extends AppCompatActivity {
             String countyName = county.getString("name");
             ((TextView) findViewById(R.id.countyName)).setText(countyName + " County");
             JSONObject population = county.getJSONObject("population");
+            JSONObject occupied = county.getJSONObject("occupied");
             Integer totalPeople = population.getInt("total");
             Integer houses = county.getInt("houses");
+            String text = withSuffix(totalPeople) + " people in " + withSuffix(houses) + " houses";
+            ((TextView) findViewById(R.id.countyPopulation)).setText(text);
+
             String chartUrl = "https://geo.torba.us/" + population.getString("chart");
             NetworkImageView chart = findViewById(R.id.county_age_chart);
             chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
-            String text = withSuffix(totalPeople) + " people in " + withSuffix(houses) + " houses";
-            ((TextView) findViewById(R.id.countyPopulation)).setText(text);
+
+            chartUrl = "https://geo.torba.us/" + occupied.getString("race_chart");
+            chart = findViewById(R.id.county_race_chart);
+            chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+
+            chartUrl = "https://geo.torba.us/" + occupied.getString("household_chart");
+            chart = findViewById(R.id.county_household_chart);
+            chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+
+            chartUrl = "https://geo.torba.us/" + occupied.getString("finance_chart");
+            chart = findViewById(R.id.county_finance_chart);
+            chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
 
             JSONObject place = data.getJSONObject("place");
             String placeName = place.getString("name");
             ((TextView) findViewById(R.id.placeName)).setText(placeName);
             population = place.getJSONObject("population");
+            occupied = county.getJSONObject("occupied");
             totalPeople = population.getInt("total");
             houses = place.getInt("houses");
+            text = withSuffix(totalPeople) + " people in " + withSuffix(houses) + " houses";
+            ((TextView) findViewById(R.id.placePopulation)).setText(text);
+
             chartUrl = "https://geo.torba.us/" + population.getString("chart");
             chart = findViewById(R.id.place_age_chart);
             chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
-            text = withSuffix(totalPeople) + " people in " + withSuffix(houses) + " houses";
-            ((TextView) findViewById(R.id.placePopulation)).setText(text);
+
+            chartUrl = "https://geo.torba.us/" + occupied.getString("race_chart");
+            chart = findViewById(R.id.place_race_chart);
+            chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+
+            chartUrl = "https://geo.torba.us/" + occupied.getString("household_chart");
+            chart = findViewById(R.id.place_household_chart);
+            chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+
+            chartUrl = "https://geo.torba.us/" + occupied.getString("finance_chart");
+            chart = findViewById(R.id.place_finance_chart);
+            chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
 
             JSONObject tract = data.getJSONObject("tract");
             String tractName = tract.getString("name");
             ((TextView) findViewById(R.id.tractName)).setText("Tract #" + tractName);
             population = tract.getJSONObject("population");
+            occupied = county.getJSONObject("occupied");
             totalPeople = population.getInt("total");
             houses = tract.getInt("houses");
+            text = withSuffix(totalPeople) + " people in " + withSuffix(houses) + " houses";
+            ((TextView) findViewById(R.id.tractPopulation)).setText(text);
+
             chartUrl = "https://geo.torba.us/" + population.getString("chart");
             chart = findViewById(R.id.tract_age_chart);
             chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
-            text = withSuffix(totalPeople) + " people in " + withSuffix(houses) + " houses";
-            ((TextView) findViewById(R.id.tractPopulation)).setText(text);
+
+            chartUrl = "https://geo.torba.us/" + occupied.getString("race_chart");
+            chart = findViewById(R.id.tract_race_chart);
+            chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+
+            chartUrl = "https://geo.torba.us/" + occupied.getString("household_chart");
+            chart = findViewById(R.id.tract_household_chart);
+            chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+
+            chartUrl = "https://geo.torba.us/" + occupied.getString("finance_chart");
+            chart = findViewById(R.id.tract_finance_chart);
+            chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
 
             spinner.setVisibility(View.GONE);
         } catch (JSONException e) {
