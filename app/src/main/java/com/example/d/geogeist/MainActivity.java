@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 
@@ -120,7 +121,13 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // TODO: Handle error
+                        spinner.setVisibility(View.GONE);
+                        CharSequence msg = "Server Error";
+                        Snackbar bar = Snackbar.make(
+                                                findViewById(R.id.coordinator),
+                                                msg,
+                                                Snackbar.LENGTH_SHORT);
+                        bar.show();
 
                     }
                 });
