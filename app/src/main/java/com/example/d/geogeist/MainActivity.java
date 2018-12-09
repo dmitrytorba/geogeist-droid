@@ -9,9 +9,11 @@ import android.location.Location;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import android.widget.ProgressBar;
@@ -39,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
     private Intent mapIntent;
 
     private ProgressBar spinner;
+    private SwipeRefreshLayout swiperefresh;
+
+    private Location lastLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onSuccess(Location location) {
                             // Got last known location. In some rare situations this can be null.
                             if (location != null) {
+                                lastLocation = location;
                                 changeLocation(location.getLongitude(), location.getLatitude());
                             } else {
                                 // TODO: show error
@@ -80,6 +86,19 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
         }
+
+
+        swiperefresh = findViewById(R.id.swiperefresh);
+        swiperefresh.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        if (lastLocation != null) {
+                            changeLocation(lastLocation.getLongitude(), lastLocation.getLatitude());
+                        }
+                    }
+                }
+        );
     }
 
     @Override
@@ -121,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        swiperefresh.setRefreshing(false);
                         spinner.setVisibility(View.GONE);
                         CharSequence msg = "Server Error";
                         Snackbar bar = Snackbar.make(
@@ -216,6 +236,7 @@ public class MainActivity extends AppCompatActivity {
             chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
 
             spinner.setVisibility(View.GONE);
+            swiperefresh.setRefreshing(false);
         } catch (JSONException e) {
             e.printStackTrace();
         }
