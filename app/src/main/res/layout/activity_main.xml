@@ -17,168 +17,175 @@
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/ic_dialog_map" />
 
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp">
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swiperefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-            <android.support.v7.widget.CardView
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
 
-                <RelativeLayout
+                <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp" >
+                    android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/tractName"
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="22sp" />
+                        android:padding="10dp" >
 
-                    <TextView
-                        android:id="@+id/tractPopulation"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/tractName"
-                        />
+                        <TextView
+                            android:id="@+id/tractName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="22sp" />
 
-                    <com.android.volley.toolbox.NetworkImageView
-                        android:id="@+id/tract_age_chart"
-                        android:layout_below="@id/tractPopulation"
-                        android:layout_height="250sp"
-                        android:layout_width="match_parent" />
+                        <TextView
+                            android:id="@+id/tractPopulation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tractName"
+                            />
 
-                    <com.android.volley.toolbox.NetworkImageView
-                        android:id="@+id/tract_race_chart"
-                        android:layout_below="@id/tract_age_chart"
-                        android:layout_height="250sp"
-                        android:layout_width="match_parent" />
+                        <com.android.volley.toolbox.NetworkImageView
+                            android:id="@+id/tract_age_chart"
+                            android:layout_below="@id/tractPopulation"
+                            android:layout_height="250sp"
+                            android:layout_width="match_parent" />
 
-                    <com.android.volley.toolbox.NetworkImageView
-                        android:id="@+id/tract_household_chart"
-                        android:layout_below="@id/tract_race_chart"
-                        android:layout_height="250sp"
-                        android:layout_width="match_parent" />
+                        <com.android.volley.toolbox.NetworkImageView
+                            android:id="@+id/tract_race_chart"
+                            android:layout_below="@id/tract_age_chart"
+                            android:layout_height="250sp"
+                            android:layout_width="match_parent" />
 
-                    <com.android.volley.toolbox.NetworkImageView
-                        android:id="@+id/tract_finance_chart"
-                        android:layout_below="@id/tract_household_chart"
-                        android:layout_height="250sp"
-                        android:layout_width="match_parent" />
+                        <com.android.volley.toolbox.NetworkImageView
+                            android:id="@+id/tract_household_chart"
+                            android:layout_below="@id/tract_race_chart"
+                            android:layout_height="250sp"
+                            android:layout_width="match_parent" />
+
+                        <com.android.volley.toolbox.NetworkImageView
+                            android:id="@+id/tract_finance_chart"
+                            android:layout_below="@id/tract_household_chart"
+                            android:layout_height="250sp"
+                            android:layout_width="match_parent" />
 
 
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <RelativeLayout
+                <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp" >
+                    android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/placeName"
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="22sp" />
+                        android:padding="10dp" >
 
-                    <TextView
-                        android:id="@+id/placePopulation"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/placeName"
-                        />
+                        <TextView
+                            android:id="@+id/placeName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="22sp" />
 
-                    <com.android.volley.toolbox.NetworkImageView
-                        android:id="@+id/place_age_chart"
-                        android:layout_below="@id/placePopulation"
-                        android:layout_height="250sp"
-                        android:layout_width="match_parent" />
+                        <TextView
+                            android:id="@+id/placePopulation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/placeName"
+                            />
 
-                    <com.android.volley.toolbox.NetworkImageView
-                        android:id="@+id/place_race_chart"
-                        android:layout_below="@id/place_age_chart"
-                        android:layout_height="250sp"
-                        android:layout_width="match_parent" />
+                        <com.android.volley.toolbox.NetworkImageView
+                            android:id="@+id/place_age_chart"
+                            android:layout_below="@id/placePopulation"
+                            android:layout_height="250sp"
+                            android:layout_width="match_parent" />
 
-                    <com.android.volley.toolbox.NetworkImageView
-                        android:id="@+id/place_household_chart"
-                        android:layout_below="@id/place_race_chart"
-                        android:layout_height="250sp"
-                        android:layout_width="match_parent" />
+                        <com.android.volley.toolbox.NetworkImageView
+                            android:id="@+id/place_race_chart"
+                            android:layout_below="@id/place_age_chart"
+                            android:layout_height="250sp"
+                            android:layout_width="match_parent" />
 
-                    <com.android.volley.toolbox.NetworkImageView
-                        android:id="@+id/place_finance_chart"
-                        android:layout_below="@id/place_household_chart"
-                        android:layout_height="250sp"
-                        android:layout_width="match_parent" />
+                        <com.android.volley.toolbox.NetworkImageView
+                            android:id="@+id/place_household_chart"
+                            android:layout_below="@id/place_race_chart"
+                            android:layout_height="250sp"
+                            android:layout_width="match_parent" />
+
+                        <com.android.volley.toolbox.NetworkImageView
+                            android:id="@+id/place_finance_chart"
+                            android:layout_below="@id/place_household_chart"
+                            android:layout_height="250sp"
+                            android:layout_width="match_parent" />
 
 
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <RelativeLayout
+                <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp" >
+                    android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/countyName"
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="22sp" />
+                        android:padding="10dp" >
 
-                    <TextView
-                        android:id="@+id/countyPopulation"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/countyName"
-                        />
+                        <TextView
+                            android:id="@+id/countyName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="22sp" />
 
-                    <com.android.volley.toolbox.NetworkImageView
-                        android:id="@+id/county_age_chart"
-                        android:layout_below="@id/countyPopulation"
-                        android:layout_height="250sp"
-                        android:layout_width="match_parent" />
+                        <TextView
+                            android:id="@+id/countyPopulation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/countyName"
+                            />
 
-
-                    <com.android.volley.toolbox.NetworkImageView
-                        android:id="@+id/county_race_chart"
-                        android:layout_below="@id/county_age_chart"
-                        android:layout_height="250sp"
-                        android:layout_width="match_parent" />
-
-                    <com.android.volley.toolbox.NetworkImageView
-                        android:id="@+id/county_household_chart"
-                        android:layout_below="@id/county_race_chart"
-                        android:layout_height="250sp"
-                        android:layout_width="match_parent" />
-
-                    <com.android.volley.toolbox.NetworkImageView
-                        android:id="@+id/county_finance_chart"
-                        android:layout_below="@id/county_household_chart"
-                        android:layout_height="250sp"
-                        android:layout_width="match_parent" />
+                        <com.android.volley.toolbox.NetworkImageView
+                            android:id="@+id/county_age_chart"
+                            android:layout_below="@id/countyPopulation"
+                            android:layout_height="250sp"
+                            android:layout_width="match_parent" />
 
 
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
+                        <com.android.volley.toolbox.NetworkImageView
+                            android:id="@+id/county_race_chart"
+                            android:layout_below="@id/county_age_chart"
+                            android:layout_height="250sp"
+                            android:layout_width="match_parent" />
 
-        </LinearLayout>
-    </ScrollView>
+                        <com.android.volley.toolbox.NetworkImageView
+                            android:id="@+id/county_household_chart"
+                            android:layout_below="@id/county_race_chart"
+                            android:layout_height="250sp"
+                            android:layout_width="match_parent" />
+
+                        <com.android.volley.toolbox.NetworkImageView
+                            android:id="@+id/county_finance_chart"
+                            android:layout_below="@id/county_household_chart"
+                            android:layout_height="250sp"
+                            android:layout_width="match_parent" />
+
+
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+        </ScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <ProgressBar
         android:id="@+id/spinner"
