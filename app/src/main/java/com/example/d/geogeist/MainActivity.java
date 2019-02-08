@@ -162,6 +162,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void renderGeoData(JSONObject data) {
+        spinner.setVisibility(View.GONE);
+        swiperefresh.setRefreshing(false);
         try {
             JSONObject county = data.getJSONObject("county");
             String countyName = county.getString("name");
@@ -241,8 +243,6 @@ public class MainActivity extends AppCompatActivity {
             chart = findViewById(R.id.tract_finance_chart);
             chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
 
-            spinner.setVisibility(View.GONE);
-            swiperefresh.setRefreshing(false);
         } catch (JSONException e) {
             e.printStackTrace();
         }
