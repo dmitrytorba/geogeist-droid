@@ -165,84 +165,95 @@ public class MainActivity extends AppCompatActivity {
         spinner.setVisibility(View.GONE);
         swiperefresh.setRefreshing(false);
         try {
-            JSONObject county = data.getJSONObject("county");
-            String countyName = county.getString("name");
-            ((TextView) findViewById(R.id.countyName)).setText(countyName + " County");
-            JSONObject population = county.getJSONObject("population");
-            JSONObject occupied = county.getJSONObject("occupied");
-            Integer totalPeople = population.getInt("total");
-            Integer houses = county.getInt("houses");
-            String text = withSuffix(totalPeople) + " people in " + withSuffix(houses) + " houses";
-            ((TextView) findViewById(R.id.countyPopulation)).setText(text);
+            JSONObject county = data.optJSONObject("county");
+            if (county != null) {
+                String countyName = county.getString("name");
+                ((TextView) findViewById(R.id.countyName)).setText(countyName + " County");
+                JSONObject population = county.getJSONObject("population");
+                JSONObject occupied = county.getJSONObject("occupied");
+                Integer totalPeople = population.getInt("total");
+                Integer houses = county.getInt("houses");
+                String text = withSuffix(totalPeople) + " people in " + withSuffix(houses) + " houses";
+                ((TextView) findViewById(R.id.countyPopulation)).setText(text);
 
-            String chartUrl = IMG_URL + population.getString("chart");
-            NetworkImageView chart = findViewById(R.id.county_age_chart);
-            chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+                String chartUrl = IMG_URL + population.getString("chart");
+                NetworkImageView chart = findViewById(R.id.county_age_chart);
+                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
 
-            chartUrl = IMG_URL + occupied.getString("race_chart");
-            chart = findViewById(R.id.county_race_chart);
-            chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+                chartUrl = IMG_URL + occupied.getString("race_chart");
+                chart = findViewById(R.id.county_race_chart);
+                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
 
-            chartUrl = IMG_URL + occupied.getString("household_chart");
-            chart = findViewById(R.id.county_household_chart);
-            chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+                chartUrl = IMG_URL + occupied.getString("household_chart");
+                chart = findViewById(R.id.county_household_chart);
+                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
 
-            chartUrl = IMG_URL + occupied.getString("finance_chart");
-            chart = findViewById(R.id.county_finance_chart);
-            chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+                chartUrl = IMG_URL + occupied.getString("finance_chart");
+                chart = findViewById(R.id.county_finance_chart);
+                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+            } else {
+                findViewById(R.id.countyContainer).setVisibility(View.GONE);
+            }
 
-            JSONObject place = data.getJSONObject("place");
-            String placeName = place.getString("name");
-            ((TextView) findViewById(R.id.placeName)).setText(placeName);
-            population = place.getJSONObject("population");
-            occupied = county.getJSONObject("occupied");
-            totalPeople = population.getInt("total");
-            houses = place.getInt("houses");
-            text = withSuffix(totalPeople) + " people in " + withSuffix(houses) + " houses";
-            ((TextView) findViewById(R.id.placePopulation)).setText(text);
+            JSONObject place = data.optJSONObject("place");
+            if (place != null) {
+                String placeName = place.getString("name");
+                ((TextView) findViewById(R.id.placeName)).setText(placeName);
+                JSONObject population = place.getJSONObject("population");
+                JSONObject occupied = county.getJSONObject("occupied");
+                Integer totalPeople = population.getInt("total");
+                Integer houses = place.getInt("houses");
+                String text = withSuffix(totalPeople) + " people in " + withSuffix(houses) + " houses";
+                ((TextView) findViewById(R.id.placePopulation)).setText(text);
 
-            chartUrl = IMG_URL + population.getString("chart");
-            chart = findViewById(R.id.place_age_chart);
-            chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+                String chartUrl = IMG_URL + population.getString("chart");
+                NetworkImageView chart = findViewById(R.id.place_age_chart);
+                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
 
-            chartUrl = IMG_URL + occupied.getString("race_chart");
-            chart = findViewById(R.id.place_race_chart);
-            chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+                chartUrl = IMG_URL + occupied.getString("race_chart");
+                chart = findViewById(R.id.place_race_chart);
+                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
 
-            chartUrl = IMG_URL + occupied.getString("household_chart");
-            chart = findViewById(R.id.place_household_chart);
-            chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+                chartUrl = IMG_URL + occupied.getString("household_chart");
+                chart = findViewById(R.id.place_household_chart);
+                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
 
-            chartUrl = IMG_URL + occupied.getString("finance_chart");
-            chart = findViewById(R.id.place_finance_chart);
-            chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+                chartUrl = IMG_URL + occupied.getString("finance_chart");
+                chart = findViewById(R.id.place_finance_chart);
+                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+            } else {
+                findViewById(R.id.placeContainer).setVisibility(View.GONE);
+            }
 
-            JSONObject tract = data.getJSONObject("tract");
-            String tractName = tract.getString("name");
-            ((TextView) findViewById(R.id.tractName)).setText("Tract #" + tractName);
-            population = tract.getJSONObject("population");
-            occupied = county.getJSONObject("occupied");
-            totalPeople = population.getInt("total");
-            houses = tract.getInt("houses");
-            text = withSuffix(totalPeople) + " people in " + withSuffix(houses) + " houses";
-            ((TextView) findViewById(R.id.tractPopulation)).setText(text);
+            JSONObject tract = data.optJSONObject("tract");
+            if (tract != null) {
+                String tractName = tract.getString("name");
+                ((TextView) findViewById(R.id.tractName)).setText("Tract #" + tractName);
+                JSONObject population = tract.getJSONObject("population");
+                JSONObject occupied = county.getJSONObject("occupied");
+                Integer totalPeople = population.getInt("total");
+                Integer houses = tract.getInt("houses");
+                String text = withSuffix(totalPeople) + " people in " + withSuffix(houses) + " houses";
+                ((TextView) findViewById(R.id.tractPopulation)).setText(text);
 
-            chartUrl = IMG_URL + population.getString("chart");
-            chart = findViewById(R.id.tract_age_chart);
-            chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+                String chartUrl = IMG_URL + population.getString("chart");
+                NetworkImageView chart = findViewById(R.id.tract_age_chart);
+                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
 
-            chartUrl = IMG_URL + occupied.getString("race_chart");
-            chart = findViewById(R.id.tract_race_chart);
-            chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+                chartUrl = IMG_URL + occupied.getString("race_chart");
+                chart = findViewById(R.id.tract_race_chart);
+                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
 
-            chartUrl = IMG_URL + occupied.getString("household_chart");
-            chart = findViewById(R.id.tract_household_chart);
-            chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+                chartUrl = IMG_URL + occupied.getString("household_chart");
+                chart = findViewById(R.id.tract_household_chart);
+                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
 
-            chartUrl = IMG_URL + occupied.getString("finance_chart");
-            chart = findViewById(R.id.tract_finance_chart);
-            chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
-
+                chartUrl = IMG_URL + occupied.getString("finance_chart");
+                chart = findViewById(R.id.tract_finance_chart);
+                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+            } else {
+                findViewById(R.id.tractContainer).setVisibility(View.GONE);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

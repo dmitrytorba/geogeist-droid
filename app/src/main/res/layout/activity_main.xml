@@ -34,7 +34,8 @@
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tractContainer">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -84,7 +85,8 @@
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:id="@+id/placeContainer">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -134,7 +136,8 @@
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:id="@+id/countyContainer">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
