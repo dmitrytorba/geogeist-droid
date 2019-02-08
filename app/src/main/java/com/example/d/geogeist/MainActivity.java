@@ -165,6 +165,37 @@ public class MainActivity extends AppCompatActivity {
         spinner.setVisibility(View.GONE);
         swiperefresh.setRefreshing(false);
         try {
+            JSONObject state = data.optJSONObject("state");
+            if (state != null) {
+                String stateName = state.getString("name");
+                ((TextView) findViewById(R.id.stateName)).setText(stateName + " State");
+                JSONObject population = state.getJSONObject("population");
+                JSONObject occupied = state.getJSONObject("occupied");
+                Integer totalPeople = population.getInt("total");
+                Integer houses = state.getInt("houses");
+                String text = withSuffix(totalPeople) + " people in " + withSuffix(houses) + " houses";
+                ((TextView) findViewById(R.id.statePopulation)).setText(text);
+
+                String chartUrl = IMG_URL + population.getString("chart");
+                NetworkImageView chart = findViewById(R.id.state_age_chart);
+                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+
+                chartUrl = IMG_URL + occupied.getString("race_chart");
+                chart = findViewById(R.id.state_race_chart);
+                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+
+                chartUrl = IMG_URL + occupied.getString("household_chart");
+                chart = findViewById(R.id.state_household_chart);
+                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+
+                chartUrl = IMG_URL + occupied.getString("finance_chart");
+                chart = findViewById(R.id.state_finance_chart);
+                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+            } else {
+                findViewById(R.id.stateContainer).setVisibility(View.GONE);
+            }
+
+
             JSONObject county = data.optJSONObject("county");
             if (county != null) {
                 String countyName = county.getString("name");
