@@ -2,10 +2,13 @@ package com.example.d.geogeist;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String LONGITUDE = "LONGITUDE";
     public static final String LATITUDE = "LATITUDE";
+    public static final String API_URL = "https://us-central1-geogeist-227901.cloudfunctions.net/coords";
     public static final String IMG_URL = "https://storage.googleapis.com/geogeist-227901.appspot.com/";
     public static final int COORDS = 1;
 
@@ -46,6 +50,36 @@ public class MainActivity extends AppCompatActivity {
     private SwipeRefreshLayout swiperefresh;
 
     private Location lastLocation;
+
+    private void snackBar(String msg) {
+        Snackbar bar = Snackbar.make(
+                findViewById(R.id.coordinator),
+                msg,
+                Snackbar.LENGTH_SHORT);
+        bar.show();
+    }
+
+    private void trackLocation() {
+        // Acquire a reference to the system Location Manager
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+        // Define a listener that responds to location updates
+        LocationListener locationListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+                // Called when a new location is found by the network location provider.
+                snackBar("location changed");
+            }
+
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+            public void onProviderEnabled(String provider) {}
+
+            public void onProviderDisabled(String provider) {}
+        };
+
+// Register the listener with the Location Manager to receive location updates
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
         spinner.setVisibility(View.VISIBLE);
         mapIntent.putExtra(LONGITUDE, lon);
         mapIntent.putExtra(LATITUDE, lat);
-        String url = "https://us-central1-geogeist-227901.cloudfunctions.net/coords?lat=" + lat + "&lon=" + lon;
+        String url = API_URL + "?lat=" + lat + "&lon=" + lon;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -144,12 +178,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         swiperefresh.setRefreshing(false);
                         spinner.setVisibility(View.GONE);
-                        CharSequence msg = "Server Error";
-                        Snackbar bar = Snackbar.make(
-                                                findViewById(R.id.coordinator),
-                                                msg,
-                                                Snackbar.LENGTH_SHORT);
-                        bar.show();
+                        snackBar("Server Error");
 
                     }
                 });
