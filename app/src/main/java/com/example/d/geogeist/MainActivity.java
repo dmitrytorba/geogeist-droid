@@ -66,8 +66,7 @@ public class MainActivity extends AppCompatActivity {
         // Define a listener that responds to location updates
         LocationListener locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
-                // Called when a new location is found by the network location provider.
-                snackBar("location changed");
+                changeLocation(location.getLongitude(), location.getLatitude());
             }
 
             public void onStatusChanged(String provider, int status, Bundle extras) {}
@@ -77,8 +76,9 @@ public class MainActivity extends AppCompatActivity {
             public void onProviderDisabled(String provider) {}
         };
 
-// Register the listener with the Location Manager to receive location updates
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        // Register the listener with the Location Manager to receive location updates
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 20, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 20, locationListener);
     }
 
     @Override
@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     0);
         } else {
+            trackLocation();
             mFusedLocationClient.getLastLocation()
                     .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                         @Override
@@ -135,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
+
     }
 
     @Override
