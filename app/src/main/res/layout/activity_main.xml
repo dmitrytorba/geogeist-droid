@@ -25,7 +25,7 @@
 
         <ScrollView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content">h
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -42,6 +42,11 @@
                         android:layout_height="wrap_content"
                         android:padding="10dp" >
 
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tractTitle">
+
                         <TextView
                             android:id="@+id/tractName"
                             android:layout_width="match_parent"
@@ -54,6 +59,12 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/tractName"
                             />
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tractDetails"
+                        android:layout_below="@id/tractTitle">
 
                         <com.android.volley.toolbox.NetworkImageView
                             android:id="@+id/tract_age_chart"
@@ -78,7 +89,7 @@
                             android:layout_below="@id/tract_household_chart"
                             android:layout_height="250sp"
                             android:layout_width="match_parent" />
-
+                    </RelativeLayout>
 
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
@@ -93,44 +104,55 @@
                         android:layout_height="wrap_content"
                         android:padding="10dp" >
 
-                        <TextView
-                            android:id="@+id/placeName"
+                        <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="22sp" />
+                            android:id="@+id/placeTitle">
 
-                        <TextView
-                            android:id="@+id/placePopulation"
+                            <TextView
+                                android:id="@+id/placeName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textSize="22sp" />
+
+                            <TextView
+                                android:id="@+id/placePopulation"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/placeName"
+                                />
+                        </RelativeLayout>
+                        <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/placeName"
-                            />
+                            android:id="@+id/placeDetails"
+                            android:layout_below="@id/placeTitle">
 
-                        <com.android.volley.toolbox.NetworkImageView
-                            android:id="@+id/place_age_chart"
-                            android:layout_below="@id/placePopulation"
-                            android:layout_height="250sp"
-                            android:layout_width="match_parent" />
+                            <com.android.volley.toolbox.NetworkImageView
+                                android:id="@+id/place_age_chart"
+                                android:layout_below="@id/placePopulation"
+                                android:layout_height="250sp"
+                                android:layout_width="match_parent" />
 
-                        <com.android.volley.toolbox.NetworkImageView
-                            android:id="@+id/place_race_chart"
-                            android:layout_below="@id/place_age_chart"
-                            android:layout_height="250sp"
-                            android:layout_width="match_parent" />
+                            <com.android.volley.toolbox.NetworkImageView
+                                android:id="@+id/place_race_chart"
+                                android:layout_below="@id/place_age_chart"
+                                android:layout_height="250sp"
+                                android:layout_width="match_parent" />
 
-                        <com.android.volley.toolbox.NetworkImageView
-                            android:id="@+id/place_household_chart"
-                            android:layout_below="@id/place_race_chart"
-                            android:layout_height="250sp"
-                            android:layout_width="match_parent" />
+                            <com.android.volley.toolbox.NetworkImageView
+                                android:id="@+id/place_household_chart"
+                                android:layout_below="@id/place_race_chart"
+                                android:layout_height="250sp"
+                                android:layout_width="match_parent" />
 
-                        <com.android.volley.toolbox.NetworkImageView
-                            android:id="@+id/place_finance_chart"
-                            android:layout_below="@id/place_household_chart"
-                            android:layout_height="250sp"
-                            android:layout_width="match_parent" />
+                            <com.android.volley.toolbox.NetworkImageView
+                                android:id="@+id/place_finance_chart"
+                                android:layout_below="@id/place_household_chart"
+                                android:layout_height="250sp"
+                                android:layout_width="match_parent" />
 
-
+                        </RelativeLayout>
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
 
@@ -144,6 +166,10 @@
                         android:layout_height="wrap_content"
                         android:padding="10dp" >
 
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/countyTitle">
                         <TextView
                             android:id="@+id/countyName"
                             android:layout_width="match_parent"
@@ -156,6 +182,13 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/countyName"
                             />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/countyDetails"
+                        android:layout_below="@id/countyTitle">
 
                         <com.android.volley.toolbox.NetworkImageView
                             android:id="@+id/county_age_chart"
@@ -182,6 +215,7 @@
                             android:layout_height="250sp"
                             android:layout_width="match_parent" />
 
+                    </RelativeLayout>
 
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
@@ -197,6 +231,10 @@
                         android:layout_height="wrap_content"
                         android:padding="10dp" >
 
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/stateTitle">
                         <TextView
                             android:id="@+id/stateName"
                             android:layout_width="match_parent"
@@ -210,7 +248,15 @@
                             android:layout_below="@id/stateName"
                             />
 
-                        <com.android.volley.toolbox.NetworkImageView
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/stateDetails"
+                        android:layout_below="@id/stateTitle">
+
+                    <com.android.volley.toolbox.NetworkImageView
                             android:id="@+id/state_age_chart"
                             android:layout_below="@id/statePopulation"
                             android:layout_height="250sp"
@@ -234,6 +280,7 @@
                             android:layout_below="@id/state_household_chart"
                             android:layout_height="250sp"
                             android:layout_width="match_parent" />
+                    </RelativeLayout>
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
 

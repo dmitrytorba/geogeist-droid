@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -222,6 +223,26 @@ public class MainActivity extends AppCompatActivity {
                 chartUrl = IMG_URL + occupied.getString("finance_chart");
                 chart = findViewById(R.id.state_finance_chart);
                 chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+
+
+                View stateTitle = findViewById(R.id.stateTitle);
+                final View stateDetails = findViewById(R.id.stateDetails);
+                stateTitle.setOnClickListener(new View.OnClickListener()
+                {
+
+                    @Override
+                    public void onClick(View v)
+                    {
+                        if (stateDetails.getVisibility() == View.VISIBLE) {
+                            stateDetails.setVisibility(View.GONE);
+
+                        } else {
+                            stateDetails.setVisibility(View.VISIBLE);
+                        }
+
+                    }
+                });
+                stateDetails.setVisibility(View.GONE);
             } else {
                 findViewById(R.id.stateContainer).setVisibility(View.GONE);
             }
@@ -253,6 +274,26 @@ public class MainActivity extends AppCompatActivity {
                 chartUrl = IMG_URL + occupied.getString("finance_chart");
                 chart = findViewById(R.id.county_finance_chart);
                 chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+
+
+                View countyTitle = findViewById(R.id.countyTitle);
+                final View countyDetails = findViewById(R.id.countyDetails);
+                countyTitle.setOnClickListener(new View.OnClickListener()
+                {
+
+                    @Override
+                    public void onClick(View v)
+                    {
+                        if (countyDetails.getVisibility() == View.VISIBLE) {
+                            countyDetails.setVisibility(View.GONE);
+
+                        } else {
+                            countyDetails.setVisibility(View.VISIBLE);
+                        }
+
+                    }
+                });
+                countyDetails.setVisibility(View.GONE);
             } else {
                 findViewById(R.id.countyContainer).setVisibility(View.GONE);
             }
@@ -283,6 +324,26 @@ public class MainActivity extends AppCompatActivity {
                 chartUrl = IMG_URL + occupied.getString("finance_chart");
                 chart = findViewById(R.id.place_finance_chart);
                 chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+
+                View placeTitle = findViewById(R.id.placeTitle);
+                final View placeDetails = findViewById(R.id.placeDetails);
+                placeTitle.setOnClickListener(new View.OnClickListener()
+                {
+
+                    @Override
+                    public void onClick(View v)
+                    {
+                        if (placeDetails.getVisibility() == View.VISIBLE) {
+                            placeDetails.setVisibility(View.GONE);
+
+                        } else {
+                            placeDetails.setVisibility(View.VISIBLE);
+                        }
+
+                    }
+                });
+                placeDetails.setVisibility(View.GONE);
+
             } else {
                 findViewById(R.id.placeContainer).setVisibility(View.GONE);
             }
@@ -313,6 +374,25 @@ public class MainActivity extends AppCompatActivity {
                 chartUrl = IMG_URL + occupied.getString("finance_chart");
                 chart = findViewById(R.id.tract_finance_chart);
                 chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
+
+                View tractTitle = findViewById(R.id.tractTitle);
+                final View tractDetails = findViewById(R.id.tractDetails);
+                tractTitle.setOnClickListener(new View.OnClickListener()
+                {
+
+                    @Override
+                    public void onClick(View v)
+                    {
+                        if (tractDetails.getVisibility() == View.VISIBLE) {
+                            tractDetails.setVisibility(View.GONE);
+
+                        } else {
+                            tractDetails.setVisibility(View.VISIBLE);
+                        }
+
+                    }
+                });
+                tractDetails.setVisibility(View.GONE);
             } else {
                 findViewById(R.id.tractContainer).setVisibility(View.GONE);
             }
