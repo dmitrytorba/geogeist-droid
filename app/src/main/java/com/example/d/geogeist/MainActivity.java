@@ -36,6 +36,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String LONGITUDE = "LONGITUDE";
@@ -43,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
     public static final String API_URL = "https://us-central1-geogeist-227901.cloudfunctions.net/coords";
     public static final String IMG_URL = "https://storage.googleapis.com/geogeist-227901.appspot.com/";
     public static final int COORDS = 1;
+    public static final double MSMPH = 2.237;
+    public static final double MFT = 3.281;
+
 
     private FusedLocationProviderClient mFusedLocationClient;
     private Intent mapIntent;
@@ -61,12 +66,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void trackLocation() {
-        // Acquire a reference to the system Location Manager
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        final TextView locationText = findViewById(R.id.locationText);
+        final TextView speedText = findViewById(R.id.speedText);
+        final DecimalFormat df = new DecimalFormat("#.##");
 
-        // Define a listener that responds to location updates
-        LocationListener locationListener = new LocationListener() {
+        LocationListener gpsListener = new LocationListener() {
             public void onLocationChanged(Location location) {
+                locationText.setText("GPS location: " + location.getLongitude() + ", " + location.getLatitude());
+                speedText.setText("Altitude: " + df.format(location.getAltitude()*MFT) + "ft Speed: " + df.format(location.getSpeed()*MSMPH) + "mph Bearing: " + location.getBearing());
+                changeLocation(location.getLongitude(), location.getLatitude());
+            }
+
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+            public void onProviderEnabled(String provider) {}
+
+            public void onProviderDisabled(String provider) {}
+        };
+
+        LocationListener netListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+                locationText.setText("Network location: " + location.getLongitude() + ", " + location.getLatitude());
+                speedText.setText("Altitude: " + location.getAltitude()*MFT + "ft Speed: " + location.getSpeed()*MSMPH + "mph Bearing: " + location.getBearing());
                 changeLocation(location.getLongitude(), location.getLatitude());
             }
 
@@ -78,8 +100,8 @@ public class MainActivity extends AppCompatActivity {
         };
 
         // Register the listener with the Location Manager to receive location updates
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 20, locationListener);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 20, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 100, netListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 100, gpsListener);
     }
 
     @Override
@@ -200,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
             JSONObject state = data.optJSONObject("state");
             if (state != null) {
                 String stateName = state.getString("name");
-                ((TextView) findViewById(R.id.stateName)).setText(stateName + " State");
+                ((TextView) findViewById(R.id.stateName)).setText(stateName);
                 JSONObject population = state.getJSONObject("population");
                 JSONObject occupied = state.getJSONObject("occupied");
                 Integer totalPeople = population.getInt("total");
@@ -251,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
             JSONObject county = data.optJSONObject("county");
             if (county != null) {
                 String countyName = county.getString("name");
-                ((TextView) findViewById(R.id.countyName)).setText(countyName + " County");
+                ((TextView) findViewById(R.id.countyName)).setText(countyName);
                 JSONObject population = county.getJSONObject("population");
                 JSONObject occupied = county.getJSONObject("occupied");
                 Integer totalPeople = population.getInt("total");
@@ -351,7 +373,7 @@ public class MainActivity extends AppCompatActivity {
             JSONObject tract = data.optJSONObject("tract");
             if (tract != null) {
                 String tractName = tract.getString("name");
-                ((TextView) findViewById(R.id.tractName)).setText("Tract #" + tractName);
+                ((TextView) findViewById(R.id.tractName)).setText(tractName);
                 JSONObject population = tract.getJSONObject("population");
                 JSONObject occupied = county.getJSONObject("occupied");
                 Integer totalPeople = population.getInt("total");
