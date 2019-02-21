@@ -381,6 +381,10 @@ public class MainActivity extends AppCompatActivity {
                 String text = withSuffix(totalPeople) + " people in " + withSuffix(houses) + " houses";
                 ((TextView) findViewById(R.id.tractPopulation)).setText(text);
 
+                String mapUrl = IMG_URL + tract.getString("map");
+                NetworkImageView map = findViewById(R.id.tract_map);
+                map.setImageUrl(mapUrl, VolleySingleton.getInstance(this).getImageLoader());
+
                 String chartUrl = IMG_URL + population.getString("chart");
                 NetworkImageView chart = findViewById(R.id.tract_age_chart);
                 chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());

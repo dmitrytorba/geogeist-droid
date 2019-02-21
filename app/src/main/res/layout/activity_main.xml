@@ -84,10 +84,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/tractDetails"
-                        android:layout_below="@id/tractTitle">
+                        android:layout_below="@id/tractTitle"
+                        android:padding="10dp">
+
+                        <com.android.volley.toolbox.NetworkImageView
+                            android:id="@+id/tract_map"
+                            android:layout_height="250sp"
+                            android:layout_width="match_parent" />
 
                         <com.android.volley.toolbox.NetworkImageView
                             android:id="@+id/tract_age_chart"
+                            android:layout_below="@id/tract_map"
                             android:layout_height="250sp"
                             android:layout_width="match_parent" />
 
