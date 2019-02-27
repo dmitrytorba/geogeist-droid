@@ -16,11 +16,11 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ProgressBar spinner;
     private SwipeRefreshLayout swiperefresh;
+    private RecyclerView recyclerView;
+    private RecyclerController recyclerController;
 
     private Location lastLocation;
 
@@ -160,6 +162,12 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
 
+        recyclerView = findViewById(R.id.recycler_view);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        recyclerController = new RecyclerController();
+        recyclerView.setAdapter(recyclerController);
     }
 
     @Override
@@ -195,6 +203,9 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(JSONObject response) {
+                        spinner.setVisibility(View.GONE);
+                        swiperefresh.setRefreshing(false);
+                        recyclerController.loadData(response);
                         renderGeoData(response);
                     }
                 }, new Response.ErrorListener() {
@@ -216,8 +227,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void renderGeoData(JSONObject data) {
-        spinner.setVisibility(View.GONE);
-        swiperefresh.setRefreshing(false);
         try {
             JSONObject state = data.optJSONObject("state");
             if (state != null) {
