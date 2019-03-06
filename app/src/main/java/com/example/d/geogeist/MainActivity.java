@@ -150,20 +150,20 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        swiperefresh = findViewById(R.id.swiperefresh);
-        swiperefresh.setOnRefreshListener(
-                new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        if (lastLocation != null) {
-                            changeLocation(lastLocation.getLongitude(), lastLocation.getLatitude());
-                        }
-                    }
-                }
-        );
+//        swiperefresh = findViewById(R.id.swiperefresh);
+//        swiperefresh.setOnRefreshListener(
+//                new SwipeRefreshLayout.OnRefreshListener() {
+//                    @Override
+//                    public void onRefresh() {
+//                        if (lastLocation != null) {
+//                            changeLocation(lastLocation.getLongitude(), lastLocation.getLatitude());
+//                        }
+//                    }
+//                }
+//        );
 
         recyclerView = findViewById(R.id.recycler_view);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
         recyclerController = new RecyclerController();
@@ -204,9 +204,9 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         spinner.setVisibility(View.GONE);
-                        swiperefresh.setRefreshing(false);
+//                        swiperefresh.setRefreshing(false);
                         recyclerController.loadData(response);
-                        renderGeoData(response);
+                        //renderGeoData(response);
                     }
                 }, new Response.ErrorListener() {
 
@@ -226,221 +226,4 @@ public class MainActivity extends AppCompatActivity {
         VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 
-    public void renderGeoData(JSONObject data) {
-        try {
-            JSONObject state = data.optJSONObject("state");
-            if (state != null) {
-                String stateName = state.getString("name");
-                ((TextView) findViewById(R.id.stateName)).setText(stateName);
-                JSONObject population = state.getJSONObject("population");
-                JSONObject occupied = state.getJSONObject("occupied");
-                Integer totalPeople = population.getInt("total");
-                Integer houses = state.getInt("houses");
-                String text = withSuffix(totalPeople) + " people in " + withSuffix(houses) + " houses";
-                ((TextView) findViewById(R.id.statePopulation)).setText(text);
-
-                String chartUrl = IMG_URL + population.getString("chart");
-                NetworkImageView chart = findViewById(R.id.state_age_chart);
-                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
-
-                chartUrl = IMG_URL + occupied.getString("race_chart");
-                chart = findViewById(R.id.state_race_chart);
-                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
-
-                chartUrl = IMG_URL + occupied.getString("household_chart");
-                chart = findViewById(R.id.state_household_chart);
-                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
-
-                chartUrl = IMG_URL + occupied.getString("finance_chart");
-                chart = findViewById(R.id.state_finance_chart);
-                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
-
-
-                View stateTitle = findViewById(R.id.stateTitle);
-                final View stateDetails = findViewById(R.id.stateDetails);
-                stateTitle.setOnClickListener(new View.OnClickListener()
-                {
-
-                    @Override
-                    public void onClick(View v)
-                    {
-                        if (stateDetails.getVisibility() == View.VISIBLE) {
-                            stateDetails.setVisibility(View.GONE);
-
-                        } else {
-                            stateDetails.setVisibility(View.VISIBLE);
-                        }
-
-                    }
-                });
-                stateDetails.setVisibility(View.GONE);
-            } else {
-                findViewById(R.id.stateContainer).setVisibility(View.GONE);
-            }
-
-
-            JSONObject county = data.optJSONObject("county");
-            if (county != null) {
-                String countyName = county.getString("name");
-                ((TextView) findViewById(R.id.countyName)).setText(countyName);
-                JSONObject population = county.getJSONObject("population");
-                JSONObject occupied = county.getJSONObject("occupied");
-                Integer totalPeople = population.getInt("total");
-                Integer houses = county.getInt("houses");
-                String text = withSuffix(totalPeople) + " people in " + withSuffix(houses) + " houses";
-                ((TextView) findViewById(R.id.countyPopulation)).setText(text);
-
-                String chartUrl = IMG_URL + population.getString("chart");
-                NetworkImageView chart = findViewById(R.id.county_age_chart);
-                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
-
-                chartUrl = IMG_URL + occupied.getString("race_chart");
-                chart = findViewById(R.id.county_race_chart);
-                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
-
-                chartUrl = IMG_URL + occupied.getString("household_chart");
-                chart = findViewById(R.id.county_household_chart);
-                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
-
-                chartUrl = IMG_URL + occupied.getString("finance_chart");
-                chart = findViewById(R.id.county_finance_chart);
-                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
-
-
-                View countyTitle = findViewById(R.id.countyTitle);
-                final View countyDetails = findViewById(R.id.countyDetails);
-                countyTitle.setOnClickListener(new View.OnClickListener()
-                {
-
-                    @Override
-                    public void onClick(View v)
-                    {
-                        if (countyDetails.getVisibility() == View.VISIBLE) {
-                            countyDetails.setVisibility(View.GONE);
-
-                        } else {
-                            countyDetails.setVisibility(View.VISIBLE);
-                        }
-
-                    }
-                });
-                countyDetails.setVisibility(View.GONE);
-            } else {
-                findViewById(R.id.countyContainer).setVisibility(View.GONE);
-            }
-
-            JSONObject place = data.optJSONObject("place");
-            if (place != null) {
-                String placeName = place.getString("name");
-                ((TextView) findViewById(R.id.placeName)).setText(placeName);
-                JSONObject population = place.getJSONObject("population");
-                JSONObject occupied = county.getJSONObject("occupied");
-                Integer totalPeople = population.getInt("total");
-                Integer houses = place.getInt("houses");
-                String text = withSuffix(totalPeople) + " people in " + withSuffix(houses) + " houses";
-                ((TextView) findViewById(R.id.placePopulation)).setText(text);
-
-                String chartUrl = IMG_URL + population.getString("chart");
-                NetworkImageView chart = findViewById(R.id.place_age_chart);
-                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
-
-                chartUrl = IMG_URL + occupied.getString("race_chart");
-                chart = findViewById(R.id.place_race_chart);
-                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
-
-                chartUrl = IMG_URL + occupied.getString("household_chart");
-                chart = findViewById(R.id.place_household_chart);
-                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
-
-                chartUrl = IMG_URL + occupied.getString("finance_chart");
-                chart = findViewById(R.id.place_finance_chart);
-                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
-
-                View placeTitle = findViewById(R.id.placeTitle);
-                final View placeDetails = findViewById(R.id.placeDetails);
-                placeTitle.setOnClickListener(new View.OnClickListener()
-                {
-
-                    @Override
-                    public void onClick(View v)
-                    {
-                        if (placeDetails.getVisibility() == View.VISIBLE) {
-                            placeDetails.setVisibility(View.GONE);
-
-                        } else {
-                            placeDetails.setVisibility(View.VISIBLE);
-                        }
-
-                    }
-                });
-                placeDetails.setVisibility(View.GONE);
-
-            } else {
-                findViewById(R.id.placeContainer).setVisibility(View.GONE);
-            }
-
-            JSONObject tract = data.optJSONObject("tract");
-            if (tract != null) {
-                String tractName = tract.getString("name");
-                ((TextView) findViewById(R.id.tractName)).setText(tractName);
-                JSONObject population = tract.getJSONObject("population");
-                JSONObject occupied = county.getJSONObject("occupied");
-                Integer totalPeople = population.getInt("total");
-                Integer houses = tract.getInt("houses");
-                String text = withSuffix(totalPeople) + " people in " + withSuffix(houses) + " houses";
-                ((TextView) findViewById(R.id.tractPopulation)).setText(text);
-
-                String mapUrl = IMG_URL + tract.getString("map");
-                NetworkImageView map = findViewById(R.id.tract_map);
-                map.setImageUrl(mapUrl, VolleySingleton.getInstance(this).getImageLoader());
-
-                String chartUrl = IMG_URL + population.getString("chart");
-                NetworkImageView chart = findViewById(R.id.tract_age_chart);
-                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
-
-                chartUrl = IMG_URL + occupied.getString("race_chart");
-                chart = findViewById(R.id.tract_race_chart);
-                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
-
-                chartUrl = IMG_URL + occupied.getString("household_chart");
-                chart = findViewById(R.id.tract_household_chart);
-                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
-
-                chartUrl = IMG_URL + occupied.getString("finance_chart");
-                chart = findViewById(R.id.tract_finance_chart);
-                chart.setImageUrl(chartUrl, VolleySingleton.getInstance(this).getImageLoader());
-
-                View tractTitle = findViewById(R.id.tractTitle);
-                final View tractDetails = findViewById(R.id.tractDetails);
-                tractTitle.setOnClickListener(new View.OnClickListener()
-                {
-
-                    @Override
-                    public void onClick(View v)
-                    {
-                        if (tractDetails.getVisibility() == View.VISIBLE) {
-                            tractDetails.setVisibility(View.GONE);
-
-                        } else {
-                            tractDetails.setVisibility(View.VISIBLE);
-                        }
-
-                    }
-                });
-                tractDetails.setVisibility(View.GONE);
-            } else {
-                findViewById(R.id.tractContainer).setVisibility(View.GONE);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static String withSuffix(long count) {
-        if (count < 1000) return "" + count;
-        int exp = (int) (Math.log(count) / Math.log(1000));
-        return String.format("%.1f%c",
-                count / Math.pow(1000, exp),
-                "KMGTPE".charAt(exp-1));
-    }
 }

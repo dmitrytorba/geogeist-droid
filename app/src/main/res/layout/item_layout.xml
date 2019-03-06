@@ -1,52 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="10dp"
     android:paddingBottom="10dp">
 
-    <android.support.v7.widget.CardView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:id="@+id/header">
 
-        <RelativeLayout
+        <TextView
+            android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp" >
+            android:textSize="22sp" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/header">
+        <TextView
+            android:id="@+id/subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            />
+    </RelativeLayout>
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:padding="10dp">
 
-                <TextView
-                    android:id="@+id/title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="22sp" />
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/map"
+            android:layout_height="250sp"
+            android:layout_width="match_parent"/>
 
-                <TextView
-                    android:id="@+id/subtitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/title"
-                    />
-            </RelativeLayout>
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/populationChart"
+            android:layout_height="250sp"
+            android:layout_width="match_parent" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:layout_below="@id/header">
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/raceChart"
+            android:layout_height="250sp"
+            android:layout_width="match_parent"/>
 
-                <ListView
-                    android:id="@+id/image_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/householdChart"
+            android:layout_height="250sp"
+            android:layout_width="match_parent"/>
 
-            </RelativeLayout>
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/financeChart"
+            android:layout_height="250sp"
+            android:layout_width="match_parent"/>
+    </LinearLayout>
 
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
 </LinearLayout>

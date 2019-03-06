@@ -1,6 +1,7 @@
 package com.example.d.geogeist;
 
 import android.content.Context;
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,53 +22,35 @@ import java.util.List;
 class RecyclerController extends RecyclerView.Adapter<RecyclerController.ViewHolder> {
 
     private List<CensusViewItem> dataset = new ArrayList<>();
+    private ImageLoader loader;
 
-    public static class CensusViewItem {
-        public String header;
-        public String subtitle;
-        public List<String> images = new ArrayList<>();
-
-        public CensusViewItem(JSONObject data) throws JSONException {
-            header = data.getString("name");
-            JSONObject population = data.getJSONObject("population");
-            JSONObject occupied = data.getJSONObject("occupied");
-            Integer totalPeople = population.getInt("total");
-            Integer houses = data.getInt("houses");
-            subtitle = withSuffix(totalPeople) + " people in " + withSuffix(houses) + " houses";
-            String map = data.optString("map");
-            if (map != null) {
-                images.add(MainActivity.IMG_URL + map);
-            }
-            images.add(MainActivity.IMG_URL + population.getString("chart"));
-            images.add(MainActivity.IMG_URL + occupied.getString("race_chart"));
-            images.add(MainActivity.IMG_URL + occupied.getString("household_chart"));
-            images.add(MainActivity.IMG_URL + occupied.getString("finance_chart"));
-        }
-    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView header;
         public TextView subtitle;
-        public ListView imagesView;
-        public ArrayAdapter<String> imagesAdapter;
+        public NetworkImageView map;
+        public NetworkImageView populationChart;
+        public NetworkImageView raceChart;
+        public NetworkImageView householdChart;
+        public NetworkImageView financeChart;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
             header = itemView.findViewById(R.id.title);
             subtitle = itemView.findViewById(R.id.subtitle);
-            imagesView = itemView.findViewById(R.id.image_list);
-            imagesAdapter = new ArrayAdapter<>(imagesView.getContext(), android.R.layout.simple_list_item_1);
-            imagesView.setAdapter(imagesAdapter);
+            map = itemView.findViewById(R.id.map);
+            populationChart = itemView.findViewById(R.id.populationChart);
+            raceChart = itemView.findViewById(R.id.raceChart);
+            householdChart = itemView.findViewById(R.id.householdChart);
+            financeChart = itemView.findViewById(R.id.financeChart);
         }
-    }
-
-    public RecyclerController() {
-
     }
 
     @Override
     public RecyclerController.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
+        loader = VolleySingleton.getInstance(context).getImageLoader();
         LayoutInflater inflater = LayoutInflater.from(context);
 
         View itemView = inflater.inflate(R.layout.item_layout, parent, false);
@@ -77,9 +63,15 @@ class RecyclerController extends RecyclerView.Adapter<RecyclerController.ViewHol
         CensusViewItem item = dataset.get(position);
         holder.header.setText(item.header);
         holder.subtitle.setText(item.subtitle);
-        holder.imagesAdapter.clear();
-        holder.imagesAdapter.addAll(item.images);
-        holder.imagesAdapter.notifyDataSetChanged();
+        if (item.map != null) {
+            holder.map.setImageUrl(item.map, loader);
+        } else {
+            holder.map.setVisibility(View.GONE);
+        }
+        holder.populationChart.setImageUrl(item.populationChart, loader);
+        holder.householdChart.setImageUrl(item.householdChart, loader);
+        holder.raceChart.setImageUrl(item.raceChart, loader);
+        holder.financeChart.setImageUrl(item.financeChart, loader);
     }
 
     @Override
@@ -121,11 +113,4 @@ class RecyclerController extends RecyclerView.Adapter<RecyclerController.ViewHol
         }
     }
 
-    public static String withSuffix(long count) {
-        if (count < 1000) return "" + count;
-        int exp = (int) (Math.log(count) / Math.log(1000));
-        return String.format("%.1f%c",
-                count / Math.pow(1000, exp),
-                "KMGTPE".charAt(exp-1));
-    }
 }
