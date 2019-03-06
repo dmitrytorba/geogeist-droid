@@ -1,13 +1,10 @@
 package com.example.d.geogeist;
 
 import android.content.Context;
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -26,24 +23,28 @@ class RecyclerController extends RecyclerView.Adapter<RecyclerController.ViewHol
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView header;
+        public TextView title;
         public TextView subtitle;
         public NetworkImageView map;
         public NetworkImageView populationChart;
         public NetworkImageView raceChart;
         public NetworkImageView householdChart;
         public NetworkImageView financeChart;
+        public View header;
+        public View body;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
-            header = itemView.findViewById(R.id.title);
+            title = itemView.findViewById(R.id.title);
             subtitle = itemView.findViewById(R.id.subtitle);
             map = itemView.findViewById(R.id.map);
             populationChart = itemView.findViewById(R.id.populationChart);
             raceChart = itemView.findViewById(R.id.raceChart);
             householdChart = itemView.findViewById(R.id.householdChart);
             financeChart = itemView.findViewById(R.id.financeChart);
+            header = itemView.findViewById(R.id.header);
+            body = itemView.findViewById(R.id.body);
         }
     }
 
@@ -59,9 +60,9 @@ class RecyclerController extends RecyclerView.Adapter<RecyclerController.ViewHol
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         CensusViewItem item = dataset.get(position);
-        holder.header.setText(item.header);
+        holder.title.setText(item.header);
         holder.subtitle.setText(item.subtitle);
         if (item.map != null) {
             holder.map.setImageUrl(item.map, loader);
@@ -72,6 +73,18 @@ class RecyclerController extends RecyclerView.Adapter<RecyclerController.ViewHol
         holder.householdChart.setImageUrl(item.householdChart, loader);
         holder.raceChart.setImageUrl(item.raceChart, loader);
         holder.financeChart.setImageUrl(item.financeChart, loader);
+        holder.header.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (holder.body.getVisibility() == View.VISIBLE) {
+                    holder.body.setVisibility(View.GONE);
+
+                } else {
+                    holder.body.setVisibility(View.VISIBLE);
+                }
+                notifyDataSetChanged();
+            }
+        });
     }
 
     @Override

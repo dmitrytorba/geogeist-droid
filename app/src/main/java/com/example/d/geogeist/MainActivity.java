@@ -206,7 +206,6 @@ public class MainActivity extends AppCompatActivity {
                         spinner.setVisibility(View.GONE);
 //                        swiperefresh.setRefreshing(false);
                         recyclerController.loadData(response);
-                        //renderGeoData(response);
                     }
                 }, new Response.ErrorListener() {
 
