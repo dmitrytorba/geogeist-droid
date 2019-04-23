@@ -93,7 +93,8 @@ class RecyclerController extends RecyclerView.Adapter<RecyclerController.ViewHol
         }
         holder.populationChart.setImageUrl(item.populationChart, loader);
         holder.householdChart.setImageUrl(item.householdChart, loader);
-        holder.raceChart.setImageUrl(item.raceChart, loader);
+        //holder.raceChart.setImageUrl(item.raceChart, loader);
+        holder.raceChart.setVisibility(View.GONE);
         holder.financeChart.setImageUrl(item.financeChart, loader);
     }
 
