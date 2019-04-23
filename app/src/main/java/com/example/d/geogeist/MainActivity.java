@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     public static final String LATITUDE = "LATITUDE";
     public static final String API_URL = "https://us-central1-geogeist-227901.cloudfunctions.net/coords";
     public static final String IMG_URL = "https://storage.googleapis.com/geogeist-227901.appspot.com/";
-    public static final String WIKI_URL = "https://en.wikipedia.org/w/api.php?action=query&list=geosearch&gsradius=10000&format=json&formatversion=2&gscoord=";
     public static final int COORDS = 1;
     public static final double MSMPH = 2.237;
     public static final double MFT = 3.281;
@@ -58,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private Intent mapIntent;
 
     private ProgressBar spinner;
-    private SwipeRefreshLayout swiperefresh;
+//    private SwipeRefreshLayout swiperefresh;
     private RecyclerView recyclerView;
     private RecyclerController recyclerController;
 
@@ -216,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        swiperefresh.setRefreshing(false);
+//                        swiperefresh.setRefreshing(false);
                         spinner.setVisibility(View.GONE);
                         snackBar("Server Error");
 
@@ -227,23 +226,6 @@ public class MainActivity extends AppCompatActivity {
 
         VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
 
-        url = WIKI_URL + lat + "%7C" + lon;
-        jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        recyclerController.loadWikiData(response);
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        spinner.setVisibility(View.GONE);
-                        snackBar("Wiki server Error");
-                    }
-                });
-        jsonObjectRequest.setRetryPolicy(retryPolicy);
-        VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 
 }
