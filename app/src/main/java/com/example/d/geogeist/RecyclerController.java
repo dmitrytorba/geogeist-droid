@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,7 +19,7 @@ import java.util.List;
 
 class RecyclerController extends RecyclerView.Adapter<RecyclerController.ViewHolder> {
 
-    private List<CensusViewItem> dataset = new ArrayList<>();
+    private List<LocationViewItem> dataset = new ArrayList<>();
     private ImageLoader loader;
 
 
@@ -38,6 +39,7 @@ class RecyclerController extends RecyclerView.Adapter<RecyclerController.ViewHol
             super(itemView);
             title = itemView.findViewById(R.id.title);
             subtitle = itemView.findViewById(R.id.subtitle);
+
             map = itemView.findViewById(R.id.map);
             populationChart = itemView.findViewById(R.id.populationChart);
             raceChart = itemView.findViewById(R.id.raceChart);
@@ -61,18 +63,14 @@ class RecyclerController extends RecyclerView.Adapter<RecyclerController.ViewHol
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        CensusViewItem item = dataset.get(position);
+        LocationViewItem item = dataset.get(position);
         holder.title.setText(item.header);
         holder.subtitle.setText(item.subtitle);
-        if (item.map != null) {
-            holder.map.setImageUrl(item.map, loader);
-        } else {
-            holder.map.setVisibility(View.GONE);
+
+        if (item instanceof CensusViewItem) {
+            onBindCensusView(holder, (CensusViewItem) item);
         }
-        holder.populationChart.setImageUrl(item.populationChart, loader);
-        holder.householdChart.setImageUrl(item.householdChart, loader);
-        holder.raceChart.setImageUrl(item.raceChart, loader);
-        holder.financeChart.setImageUrl(item.financeChart, loader);
+
         holder.header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,6 +83,18 @@ class RecyclerController extends RecyclerView.Adapter<RecyclerController.ViewHol
                 notifyDataSetChanged();
             }
         });
+    }
+
+    private void onBindCensusView(ViewHolder holder, CensusViewItem item) {
+        if (item.map != null) {
+            holder.map.setImageUrl(item.map, loader);
+        } else {
+            holder.map.setVisibility(View.GONE);
+        }
+        holder.populationChart.setImageUrl(item.populationChart, loader);
+        holder.householdChart.setImageUrl(item.householdChart, loader);
+        holder.raceChart.setImageUrl(item.raceChart, loader);
+        holder.financeChart.setImageUrl(item.financeChart, loader);
     }
 
     @Override
@@ -123,6 +133,14 @@ class RecyclerController extends RecyclerView.Adapter<RecyclerController.ViewHol
             this.notifyDataSetChanged();
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+
+    public void loadWikiData(JSONObject data) {
+        JSONObject query = data.optJSONObject("query");
+        if (query != null) {
+            JSONArray results = query.optJSONArray("geosearch");
         }
     }
 

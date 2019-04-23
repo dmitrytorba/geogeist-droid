@@ -3,9 +3,7 @@ package com.example.d.geogeist;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class CensusViewItem {
-    public String header;
-    public String subtitle;
+public class CensusViewItem extends LocationViewItem {
     public String map;
     public String populationChart;
     public String raceChart;
