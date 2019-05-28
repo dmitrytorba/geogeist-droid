@@ -18,5 +18,5 @@ Data above is shown for all of the availible geo resolutions:
 
 ## Screenshots
 
-<img src="/marketing/screenshot3.png" alt="" width="200"/><img src="/marketing/screenshot2.png" alt="" width="200"/><img src="/marketing/screenshot1.png" alt="" width="200"/>
+<img src="/marketing/san_ramon.png" alt="" width="200"/><img src="/marketing/tract_1.png" alt="" width="200"/><img src="/marketing/california.png" alt="" width="200"/>
 
