@@ -1,4 +1,4 @@
-package com.example.d.geogeist;
+package com.torba.d.geogeist;
 
 import org.junit.Test;
 

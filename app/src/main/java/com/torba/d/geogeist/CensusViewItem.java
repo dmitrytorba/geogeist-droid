@@ -1,4 +1,4 @@
-package com.example.d.geogeist;
+package com.torba.d.geogeist;
 
 import org.json.JSONException;
 import org.json.JSONObject;

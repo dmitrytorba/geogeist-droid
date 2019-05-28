@@ -1,4 +1,4 @@
-    package com.example.d.geogeist;
+    package com.torba.d.geogeist;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -16,8 +15,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import static com.example.d.geogeist.MainActivity.LATITUDE;
-import static com.example.d.geogeist.MainActivity.LONGITUDE;
+import static com.torba.d.geogeist.MainActivity.LATITUDE;
+import static com.torba.d.geogeist.MainActivity.LONGITUDE;
 
     public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 

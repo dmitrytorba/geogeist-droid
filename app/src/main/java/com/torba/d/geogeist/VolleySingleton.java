@@ -1,4 +1,4 @@
-package com.example.d.geogeist;
+package com.torba.d.geogeist;
 
 import android.content.Context;
 import android.graphics.Bitmap;

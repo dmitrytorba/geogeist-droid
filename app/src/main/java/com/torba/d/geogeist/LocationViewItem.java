@@ -1,4 +1,4 @@
-package com.example.d.geogeist;
+package com.torba.d.geogeist;
 
 public class LocationViewItem {
     public String header;
