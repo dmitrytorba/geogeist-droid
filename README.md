@@ -1,8 +1,14 @@
 ## Location Scan
-Android App that finds interesting data about your current location.  Android Store beta launch soon!
+Android App that finds interesting data about your current location.  
+https://play.google.com/apps/testing/com.torba.d.geogeist/join
 
-## Census Data
-Census ACS2010 import is almost complete, here are the features for this release.
+
+## Screenshots
+
+<img src="/marketing/san_ramon.png" alt="" /> <img src="/marketing/california.png" alt="" />
+
+## Version 0.1
+Version 0.1 includes the Census DECENNIAL SF1 2010 dataset.  
 
 Demographic charts about your location: 
 - population distribution by age and sex
@@ -14,8 +20,4 @@ Data above is shown for all of the availible geo resolutions:
 - city
 - county
 - state
-
-## Screenshots
-
-<img src="/marketing/screenshot3.png" alt="" width="200"/><img src="/marketing/screenshot2.png" alt="" width="200"/><img src="/marketing/screenshot1.png" alt="" width="200"/>
 
