@@ -1,6 +1,7 @@
 package com.torba.d.geogeist;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -123,31 +124,11 @@ public class MainActivity extends AppCompatActivity {
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.ello
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     0);
         } else {
-            trackLocation();
-            mFusedLocationClient.getLastLocation()
-                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                        @Override
-                        public void onSuccess(Location location) {
-                            // Got last known location. In some rare situations this can be null.
-                            if (location != null) {
-                                lastLocation = location;
-                                changeLocation(location.getLongitude(), location.getLatitude());
-                            } else {
-                                // TODO: show error
-                            }
-                        }
-                    });
+            initLocation();
         }
 
 
@@ -171,10 +152,29 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(recyclerController);
     }
 
+    @SuppressLint("MissingPermission")
+    private void initLocation() {
+        trackLocation();
+        mFusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            lastLocation = location;
+                            changeLocation(location.getLongitude(), location.getLatitude());
+                        } else {
+                            spinner.setVisibility(View.GONE);
+                            snackBar("Android Permission Error");
+                        }
+                    }
+                });
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
-        // TODO
+        initLocation();
     }
 
     @Override
